@@ -5,8 +5,12 @@ public class CreditCardPayment implements IPayment {
 
 	@Override
 	public PaymentStatus doPayment(int amount) {
-		// TODO Auto-generated method stub
-		return null;
+		//Dummmy ttaus
+		PaymentStatus paymentStatus = new PaymentStatus();
+		paymentStatus.setAmount(amount);
+		paymentStatus.setStatus("SUCCESS");
+		paymentStatus.setTransactionId("12222");
+		return paymentStatus;
 	}
 
 }

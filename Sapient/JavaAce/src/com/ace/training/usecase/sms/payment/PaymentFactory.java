@@ -4,6 +4,13 @@ public class PaymentFactory {
 	private static PaymentFactory instance;
 
 	public static PaymentFactory getInstance() {
+		if(instance == null){
+			synchronized (PaymentFactory.class) {
+				if(instance == null){
+					instance = new PaymentFactory();
+				}
+			}
+		}
 		return instance;
 	}
 
