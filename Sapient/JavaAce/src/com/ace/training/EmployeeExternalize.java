@@ -1,25 +1,28 @@
 package com.ace.training;
 
+import java.io.Externalizable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class Employee implements Serializable {
+public class EmployeeExternalize implements Externalizable {
 
 	private String name;
-	private Student student;
+	private int age;
 
-	public Student getStudent() {
-		return student;
+	public int getAge() {
+		return age;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public String getName() {
@@ -31,17 +34,20 @@ public class Employee implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "EmployeeExternalize [name=" + name + ", age=" + age + "]";
+	}
+
+	@Override
 	public Object clone() throws CloneNotSupportedException {
-		//ssuper.clone();
+		// ssuper.clone();
 		return super.clone();
 	}
 
 	public static void main(String[] args) {
-		Employee e = new Employee();
+		EmployeeExternalize e = new EmployeeExternalize();
 		e.setName("kaushal");
-		Student st = new Student();
-		st.setName("kkkk");
-		e.setStudent(st);
+		e.setAge(50);
 		/*
 		 * Reflection
 		 */
@@ -59,13 +65,15 @@ public class Employee implements Serializable {
 
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(new File(
-					"serialize.txt"));
+					"externalize.txt"));
 			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
 			out.writeObject(e);
+			System.out.println(e.toString());
 			ObjectInputStream inputStream = new ObjectInputStream(
-					new FileInputStream(new File("serialize.txt")));
-			Employee e1 = (Employee) inputStream.readObject();
-			System.out.println(e1.getName());
+					new FileInputStream(new File("externalize.txt")));
+			EmployeeExternalize e1 = (EmployeeExternalize) inputStream
+					.readObject();
+			System.out.println(e1.toString());
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -76,6 +84,21 @@ public class Employee implements Serializable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(this.name);// Chars(this.name);
+		out.writeInt(this.age);
+
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException,
+			ClassNotFoundException {
+		this.name = (String)in.readObject();
+		this.age = in.readInt();
 
 	}
 }

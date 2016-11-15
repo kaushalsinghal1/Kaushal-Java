@@ -1,5 +1,7 @@
 package com.ace.training.design;
 
+import com.ace.training.Employee;
+
 public class CheckOut {
 	private ShoppingCart cart;
 
@@ -35,6 +37,16 @@ public class CheckOut {
 
 	private boolean verifyCartDetails(ShoppingCart cart2) {
 		return true;
+	}
+	public static void main(String[] args) {
+		Employee e =new  Employee();
+		try {
+			e.clone();
+		} catch (CloneNotSupportedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	}
 
 }
