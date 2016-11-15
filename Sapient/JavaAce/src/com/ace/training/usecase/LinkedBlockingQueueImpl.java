@@ -17,25 +17,37 @@ public class LinkedBlockingQueueImpl<T> {
 	}
 
 	private void signalNotFull() {
-		putLock.lock();
+		final Lock putlock = this.putLock;
+		putlock.lock();
 		try {
 			notFull.signal();
 		} finally {
-			putLock.unlock();
+			putlock.unlock();
 		}
 	}
 
 	private void signalNotEmpty() {
-		takeLock.lock();
+		final Lock takelock = this.takeLock;
+		takelock.lock();
 		try {
 			notEmpty.signal();
 		} finally {
-			takeLock.unlock();
+			takelock.unlock();
 		}
 	}
 
-	private Lock putLock = new ReentrantLock();
-	private Lock takeLock = new ReentrantLock();
+	private void fullyLock() {
+		this.putLock.lock();
+		this.takeLock.lock();
+	}
+
+	private void fullyUnlock() {
+		this.takeLock.unlock();
+		this.putLock.unlock();
+	}
+
+	private ReentrantLock putLock = new ReentrantLock();
+	private ReentrantLock takeLock = new ReentrantLock();
 
 	private Condition notFull = putLock.newCondition();
 	private Condition notEmpty = takeLock.newCondition();
@@ -53,8 +65,10 @@ public class LinkedBlockingQueueImpl<T> {
 	}
 
 	public void clear() {
+		fullyLock();
 		head = last = new Node<>(null);
 		size.set(0);
+		fullyUnlock();
 	}
 
 	public int size() {
@@ -67,13 +81,6 @@ public class LinkedBlockingQueueImpl<T> {
 	 * @return
 	 */
 	private synchronized T removeFirstNode() {
-		// Node<E> h = head;
-		// Node<E> first = h.next;
-		// h.next = h; // help GC
-		// head = first;
-		// E x = first.item;
-		// first.item = null;
-
 		Node<T> h = head;
 		Node<T> first = h.next;
 		h.next = h; // GC
@@ -90,21 +97,27 @@ public class LinkedBlockingQueueImpl<T> {
 
 	public void put(T data) throws InterruptedException {
 		Node<T> node = new Node<>(data);
-		putLock.lockInterruptibly();
+		final ReentrantLock putlock = this.putLock;
+		putlock.lockInterruptibly();
 		int c = -1;
 		try {
 			while (size.get() == capacity) {
-				notFull.await();
+				try {
+					notFull.await();
+				} catch (InterruptedException e) {
+					notFull.signal();
+					throw e;
+				}
 			}
 			addNode(node);
 
-			c = size.incrementAndGet();
+			c = size.getAndIncrement();
 			if (c + 1 < capacity) {
 				notFull.signal();
 			}
 
 		} finally {
-			putLock.unlock();
+			putlock.unlock();
 		}
 		// If previously empty then signal the take lock
 		if (c == 0)
@@ -125,7 +138,7 @@ public class LinkedBlockingQueueImpl<T> {
 			if (size.get() < capacity) {
 				addNode(node);
 
-				c = size.incrementAndGet();
+				c = size.getAndIncrement();
 				if (c + 1 < capacity) {
 					notFull.signal();
 				}
@@ -142,20 +155,26 @@ public class LinkedBlockingQueueImpl<T> {
 	}
 
 	public T take() throws InterruptedException {
-		takeLock.lockInterruptibly();
+		final ReentrantLock takelock = this.takeLock;
+		takelock.lockInterruptibly();
 		T val = null;
 		int c = -1;
 		try {
-			if (size.get() == 0) {
-				notEmpty.await();
+			while (size.get() == 0) {
+				try {
+					notEmpty.await();
+				} catch (InterruptedException e) {
+					notEmpty.signal();
+					throw e;
+				}
 			}
 			val = removeFirstNode();
-			c = size.decrementAndGet();
+			c = size.getAndDecrement();
 			if (c > 1) {
 				notEmpty.signal();
 			}
 		} finally {
-			takeLock.unlock();
+			takelock.unlock();
 		}
 		if (c == capacity) {
 			signalNotFull();
@@ -163,14 +182,14 @@ public class LinkedBlockingQueueImpl<T> {
 		return val;
 	}
 
-	public T poll()  {
+	public T poll() {
 		T val = null;
 		int c = -1;
 		takeLock.lock();
 		try {
 			if (size.get() > 0) {
 				val = removeFirstNode();
-				c = size.decrementAndGet();
+				c = size.getAndDecrement();
 				if (c > 1) {
 					notEmpty.signal();
 				}
