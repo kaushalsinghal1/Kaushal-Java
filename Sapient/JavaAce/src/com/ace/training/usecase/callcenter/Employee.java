@@ -5,8 +5,9 @@ public class Employee {
 	protected String designation;
 	private String Address;
 
-	public Employee(String designation) {
+	public Employee(String designation, String name ) {
 		this.designation = designation;
+		this.name = name;
 	}
 
 	public String getName() {

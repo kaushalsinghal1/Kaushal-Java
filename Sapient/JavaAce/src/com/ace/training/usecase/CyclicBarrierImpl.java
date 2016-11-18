@@ -1,9 +1,10 @@
 package com.ace.training.usecase;
 
 import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CyclicBarrierImpl {
-	private int count = 0;
+	private AtomicInteger count;
 	private int parties = 0;
 	private Runnable barrierCommad;
 	private boolean broken = false;
@@ -11,13 +12,14 @@ public class CyclicBarrierImpl {
 
 	public CyclicBarrierImpl(int parties, Runnable barrierCommad) {
 		this.parties = parties;
-		this.count = parties;
+		this.count = new AtomicInteger(parties);
 		this.barrierCommad = barrierCommad;
 	}
 
-	private synchronized int doBarrier() throws BrokenBarrierException, InterruptedException {
+	private synchronized int doBarrier() throws BrokenBarrierException,
+			InterruptedException {
 
-		int index = --count;
+		int index = count.decrementAndGet();
 		if (broken) {
 			throw new BrokenBarrierException();
 		} else if (Thread.interrupted()) {
@@ -57,25 +59,26 @@ public class CyclicBarrierImpl {
 	private void reset() {
 		reset++;
 		broken = false;
-		count = parties;
+		count = new AtomicInteger(parties);
 
 	}
+
 	public void await() throws InterruptedException, BrokenBarrierException {
 		doBarrier();
 	}
-//	public void await() throws InterruptedException {
-//		lock.lock();
-//		try {
-//			count--;
-//			if (count == 0) {
-//				reset();
-//				condition.signalAll();
-//				barrierCommad.run();
-//			} else {
-//				condition.await();
-//			}
-//		} finally {
-//			lock.unlock();
-//		}
-//	}
+	// public void await() throws InterruptedException {
+	// lock.lock();
+	// try {
+	// count--;
+	// if (count == 0) {
+	// reset();
+	// condition.signalAll();
+	// barrierCommad.run();
+	// } else {
+	// condition.await();
+	// }
+	// } finally {
+	// lock.unlock();
+	// }
+	// }
 }

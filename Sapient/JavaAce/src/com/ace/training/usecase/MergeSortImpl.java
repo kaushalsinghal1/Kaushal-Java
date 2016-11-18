@@ -4,13 +4,18 @@ import java.util.Arrays;
 
 public class MergeSortImpl {
 
-	public static void mergeSort(int[] arr, int first, int last) {
+	private static void mergeSort(int[] arr, int first, int last) {
 		if (first < last) {
 			int mid = (first + last) / 2;
 			mergeSort(arr, first, mid);
 			mergeSort(arr, mid + 1, last);
 			merge(arr, first, mid, last);
 		}
+
+	}
+
+	public static void mergeSort(int[] arr) {
+		mergeSort(arr, 0, arr.length - 1);
 
 	}
 

@@ -3,6 +3,7 @@ package com.ace.training.usecase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ThreadPoolManager {
@@ -26,14 +27,22 @@ public class ThreadPoolManager {
 		if (isStopped) {
 			throw new IllegalStateException("ThreadPool stopped");
 		}
-		queues.offer(runnable);
+		boolean added = queues.offer(runnable);
+		if (!added) {
+			// Rejected task
+			System.out.println("Max queue limit reached");
+		}
 	}
 
-	public synchronized void stop() {
+	public synchronized void shutdownNow() {
 		isStopped = true;
 		for (WorkerThread thread : threads) {
 			thread.doStop();
 		}
+	}
+
+	public synchronized void shutdown() {
+		isStopped = true;
 	}
 
 	class WorkerThread extends Thread {

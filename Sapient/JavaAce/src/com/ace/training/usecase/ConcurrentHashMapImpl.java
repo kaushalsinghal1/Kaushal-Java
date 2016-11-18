@@ -72,6 +72,19 @@ public class ConcurrentHashMapImpl<K, V> {
 		return null;
 	}
 
+	public V get(K key) {
+		int index = getBucketIndex(key);
+		List<Entry<K, V>> entries = tableEnries.get(index);
+		if (entries == null) {
+			return null;
+		}
+		Entry<K, V> entry = findEntry(entries, key);
+		if (entry != null) {
+			return entry.getValue();
+		}
+		return null;
+	}
+
 	private Entry<K, V> findEntry(List<Entry<K, V>> entries, K k) {
 		for (Entry<K, V> entry : entries) {
 			if (entry.getKey().equals(k)) {
@@ -108,7 +121,8 @@ public class ConcurrentHashMapImpl<K, V> {
 		private ConcurrentHashMapImpl<Integer, String> mapImpl;
 		private int keyMult;
 
-		public Worker(ConcurrentHashMapImpl<Integer, String> mapImpl, int keyMult) {
+		public Worker(ConcurrentHashMapImpl<Integer, String> mapImpl,
+				int keyMult) {
 			this.mapImpl = mapImpl;
 			this.keyMult = keyMult;
 		}

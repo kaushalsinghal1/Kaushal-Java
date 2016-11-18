@@ -24,14 +24,14 @@ public class CountDownLatchImpl {
 
 	public boolean doWait(long time, TimeUnit unit) throws InterruptedException {
 		long milis = TimeUnit.MILLISECONDS.convert(time, unit);
-		return doCounyterWait(true, milis);
+		return doCounterWait(true, milis);
 	}
 
 	public void doWait() throws InterruptedException {
-		doCounyterWait(false, 0);
+		doCounterWait(false, 0);
 	}
 
-	private synchronized boolean doCounyterWait(boolean timed, long timeMilis) throws InterruptedException {
+	private synchronized boolean doCounterWait(boolean timed, long timeMilis) throws InterruptedException {
 		if (Thread.interrupted()) {
 			throw new InterruptedException();
 		}

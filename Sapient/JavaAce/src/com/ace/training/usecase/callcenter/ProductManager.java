@@ -2,11 +2,11 @@ package com.ace.training.usecase.callcenter;
 
 public class ProductManager extends Employee implements Agent {
 	private static final String DESIGNATION = "PM";
-	private Agent excelarate;
+	private Agent escalate;
 
-	public ProductManager(Agent excelarate) {
-		super(DESIGNATION);
-		this.excelarate = excelarate;
+	public ProductManager(Agent excelarate, String name) {
+		super(DESIGNATION, name);
+		this.escalate = excelarate;
 	}
 
 	@Override

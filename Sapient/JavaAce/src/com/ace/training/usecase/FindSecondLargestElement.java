@@ -1,12 +1,12 @@
 package com.ace.training.usecase;
 
-public class FindSecondElement {
+public class FindSecondLargestElement {
 
-	public static void findFirstAndSecondLargest(int[] arr) {
+	public static int[] findFirstAndSecondLargest(int[] arr) {
 		if (arr.length < 2) {
 			System.out
 					.println("Input Array should contains atleast 2 elements");
-			return;
+			throw new IllegalArgumentException("Input Array should contains atleast 2 elements");
 		}
 		int first = arr[0], second = Integer.MIN_VALUE;
 		for (int i = 1; i < arr.length; i++) {
@@ -19,10 +19,7 @@ public class FindSecondElement {
 		}
 		System.out.println("First Largest: " + first + " , second Largest: "
 				+ second);
+		return new int[] { first, second };
 	}
 
-	public static void main(String[] args) {
-		int[] arr = { 5, 9, 77, 5, 6, 44, 25, 49, 22, 56, 77, 22, 8 };
-		findFirstAndSecondLargest(arr);
-	}
 }
