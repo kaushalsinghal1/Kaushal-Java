@@ -9,10 +9,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class Employee implements Serializable {
+import jdk.internal.org.objectweb.asm.commons.SerialVersionUIDAdder;
 
+public class Employee extends Person implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
+//	private int empId;
 	private Student student;
+
+	public Employee() {
+		super(10);
+	}
 
 	public Student getStudent() {
 		return student;
@@ -32,7 +42,7 @@ public class Employee implements Serializable {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		//ssuper.clone();
+		// ssuper.clone();
 		return super.clone();
 	}
 
@@ -41,6 +51,7 @@ public class Employee implements Serializable {
 		e.setName("kaushal");
 		Student st = new Student();
 		st.setName("kkkk");
+		//e.setEmpId(10101);
 		e.setStudent(st);
 		/*
 		 * Reflection
@@ -58,24 +69,27 @@ public class Employee implements Serializable {
 		// ----------------------------------
 
 		try {
-			FileOutputStream fileOutputStream = new FileOutputStream(new File(
-					"serialize.txt"));
-			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-			out.writeObject(e);
-			ObjectInputStream inputStream = new ObjectInputStream(
-					new FileInputStream(new File("serialize.txt")));
+//			FileOutputStream fileOutputStream = new FileOutputStream(new File("serialize.txt"));
+//			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+//			out.writeObject(e);
+			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(new File("serialize.txt")));
 			Employee e1 = (Employee) inputStream.readObject();
-			System.out.println(e1.getName());
+			System.out.println(e1.getName() + " , " );
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 	}
+
+//	public int getEmpId() {
+//		return empId;
+//	}
+//
+//	public void setEmpId(int empId) {
+//		this.empId = empId;
+//	}
 }
