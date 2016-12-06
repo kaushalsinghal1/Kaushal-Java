@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -97,7 +98,7 @@ public class ConcurrentHashMapImpl<K, V> {
 	private void addEntries(List<Entry<K, V>> entries, K k, V v) {
 		Entry<K, V> entry = findEntry(entries, k);
 		if (entry == null) {
-			entry = new AbstractMap.SimpleEntry(k, v);
+			entry = new AbstractMap.SimpleEntry<K, V>(k, v);
 			entries.add(entry);
 			size.incrementAndGet();
 		}

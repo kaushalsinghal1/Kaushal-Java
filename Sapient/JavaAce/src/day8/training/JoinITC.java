@@ -27,9 +27,10 @@ public class JoinITC {
 		}
 	}
 	public static void main(String[] args) {
-		SharedObject sharedObject = new SharedObject();
+	//	SharedObject sharedObject = new SharedObject();
 //		synchronized (this) {
 //			
 //		}
+		System.out.println(System.getProperty("java.version"));
 	}
 }
