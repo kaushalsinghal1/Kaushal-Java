@@ -109,7 +109,6 @@ public class SortingAlgo {
 				mergeSort(arr1);
 				mergeSort(arr2);
 				merge(arr1, arr2, arr);
-
 			}
 
 		}

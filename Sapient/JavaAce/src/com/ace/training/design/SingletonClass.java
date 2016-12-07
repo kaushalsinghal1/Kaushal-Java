@@ -13,9 +13,17 @@ public class SingletonClass {
 
 	public static SingletonClass getInstance() {
 		if (instance == null) {
+			System.out.println("Thread 1"+ Thread.currentThread().getName());
 			synchronized (SingletonClass.class) {
+				System.out.println("Thread 2"+ Thread.currentThread().getName());
 				if (instance == null) {
 					instance = new SingletonClass();
+					System.out.println("Thread 3"+ Thread.currentThread().getName());
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 
 				}
 			}
@@ -31,6 +39,28 @@ public class SingletonClass {
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException();
+	}
+
+	public static void main(String[] args) {
+		Thread t1 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				SingletonClass.getInstance();
+
+			}
+		});
+		Thread t2 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				SingletonClass.getInstance();
+
+			}
+		});
+		t1.start();
+		t2.start();
+		System.out.println("Count" + count);
 	}
 
 }

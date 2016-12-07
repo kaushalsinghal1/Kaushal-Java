@@ -3,13 +3,9 @@ package com.ace.training;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
-import jdk.internal.org.objectweb.asm.commons.SerialVersionUIDAdder;
 
 public class Employee extends Person implements Serializable {
 	/**

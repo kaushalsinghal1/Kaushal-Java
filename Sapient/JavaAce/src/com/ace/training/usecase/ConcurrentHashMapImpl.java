@@ -22,7 +22,7 @@ public class ConcurrentHashMapImpl<K, V> {
 		tableEnries = new ArrayList<>(BUCKET_COUNT);
 		for (int i = 0; i < locks.length; i++) {
 			locks[i] = new ReentrantLock();
-			tableEnries.add(new LinkedList<>());
+			tableEnries.add(new LinkedList<Entry<K, V>>());
 		}
 	}
 
