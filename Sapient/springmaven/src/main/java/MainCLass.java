@@ -6,16 +6,17 @@ import org.kaushal.school.dto.Student;
 import org.kaushal.school.service.StudentService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class MainCLass {
 	public static void main(String[] args) {
 
-		try {
-			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		System.out.println("PostgreSQL JDBC Driver Registered!");
+//		try {
+//			Class.forName("org.postgresql.Driver");
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		System.out.println("PostgreSQL JDBC Driver Registered!");
 
 //		Connection connection = null;
 //
@@ -38,6 +39,8 @@ public class MainCLass {
 //		} else {
 //			System.out.println("Failed to make connection!");
 //		}
+//		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//		dataSource.setDriverClassName("org.postgresql.Driver");
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("springmvc-servlet.xml");
 		StudentService service = applicationContext.getBean("studentService", StudentService.class);
 		service.createStudent(buildDummyStudent());

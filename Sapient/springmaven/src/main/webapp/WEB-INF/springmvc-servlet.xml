@@ -17,7 +17,7 @@
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">
-			<value>database.properties</value>
+			<value>/WEB-INF/database.properties</value>
 		</property>
 	</bean>
 
@@ -50,6 +50,7 @@
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	<mvc:annotation-driven />
+	<context:component-scan base-package="org.kaushal.school.rest"></context:component-scan>
 
 
 	<!-- ========================Application bean================= -->

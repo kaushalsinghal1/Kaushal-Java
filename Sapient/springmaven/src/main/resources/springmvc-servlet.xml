@@ -49,7 +49,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	<mvc:annotation-driven />
+<!-- 	<mvc:annotation-driven /> -->
 
 
 	<!-- ========================Application bean================= -->
