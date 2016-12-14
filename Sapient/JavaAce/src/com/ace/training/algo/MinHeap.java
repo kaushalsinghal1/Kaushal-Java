@@ -112,8 +112,8 @@ public class MinHeap {
 
 	public static void main(String[] args) {
 		MinHeap heap = new MinHeap(10);
-		int a[] = { 5, 9, 10, 98, 36, 45,80 };
-		int a1[] = { 5,10,15,4,55,30,35,40};
+		int a[] = { 5, 9, 10, 98, 36, 45, 80 };
+		int a1[] = { 5, 10, 15, 4, 55, 30, 35, 40 };
 		for (int i = 0; i < a1.length; i++) {
 			heap.inserNode(a1[i]);
 		}
