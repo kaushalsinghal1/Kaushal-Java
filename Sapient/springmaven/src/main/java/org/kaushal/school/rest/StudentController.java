@@ -7,6 +7,7 @@ import org.kaushal.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,22 +22,21 @@ public class StudentController {
 		this.studentService = studentService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Student> getStudents() {
 		return studentService.getStudents();
-
 	}
 
-	@RequestMapping(method = RequestMethod.POST, produces="application/json")
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public Student createStudent() {
-		return studentService.createStudent(buildDummyStudent());
+	public Student createStudent(@RequestParam("nanme") String name) {
+		return studentService.createStudent(buildDummyStudent(name));
 	}
 
-	private Student buildDummyStudent() {
+	private Student buildDummyStudent(String name) {
 		Student student = new Student();
-		student.setName("kaushal");
+		student.setName(name == null ? "kaushal" : name);
 		student.setAddress("Marathalli");
 		student.setCity("Bangalore");
 		return student;

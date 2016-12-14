@@ -1,5 +1,6 @@
 package org.kaushal.school.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -10,9 +11,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STUDENT")
-public class StudentEntity {
+@Table(name = "COM_STUDENT")
+public class StudentEntity extends EntitySuper implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence1")
 	@SequenceGenerator(name = "sequence1", initialValue = 1, sequenceName = "sequence1")
@@ -87,6 +92,11 @@ public class StudentEntity {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	@Override
+	public int getPrimaryKey() {
+		return id;
 	}
 
 }
