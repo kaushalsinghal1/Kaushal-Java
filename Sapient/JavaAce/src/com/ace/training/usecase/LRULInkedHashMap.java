@@ -1,6 +1,7 @@
 package com.ace.training.usecase;
 
 import java.util.LinkedHashMap;
+import java.util.stream.Stream;
 
 public class LRULInkedHashMap<K, V> extends LinkedHashMap<K, V> {
 	private static final float DEFAULT_LOAD_FACTOR = 0.75f;

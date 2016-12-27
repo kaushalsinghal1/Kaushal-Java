@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 public class Test {
 	// static{
@@ -20,24 +21,24 @@ public class Test {
 	// }
 	public static void main(String[] args) {
 		// FX.getConnection();
+		Stream.iterate(1, n -> n + 1).limit(10).filter(i -> i % 2 == 0).forEach(System.out::println);
+		Stream.generate(() -> " test").limit(10).forEach(System.out::print);
+		System.out.println();
 		Integer[] a = { 2, 1, 2, 5 };
 		List<Integer> list = Arrays.asList(a);
 		list.set(1, 5);
 		System.out.println(Arrays.toString(a));
 		Future<Double> future = null;
-//		future.
+		// future.
 		java.util.Map<String, Person> map = new HashMap<String, Person>();
 		map.put("abc", new Person("kaushal", 22));
 		map.put("abcd", new Person("kaushal-tets", 27));
 		try {
-			FileOutputStream fileOutputStream = new FileOutputStream(new File(
-					"serialize-map.txt"));
+			FileOutputStream fileOutputStream = new FileOutputStream(new File("serialize-map.txt"));
 			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
 			out.writeObject(map);
-			ObjectInputStream inputStream = new ObjectInputStream(
-					new FileInputStream(new File("serialize-map.txt")));
-			Map<String, Person> map2 = (Map<String, Person>) inputStream
-					.readObject();
+			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(new File("serialize-map.txt")));
+			Map<String, Person> map2 = (Map<String, Person>) inputStream.readObject();
 			System.out.println(map2.get("abc"));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();

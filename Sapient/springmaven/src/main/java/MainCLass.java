@@ -6,6 +6,7 @@ import org.kaushal.school.dto.Student;
 import org.kaushal.school.service.StudentService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class MainCLass {

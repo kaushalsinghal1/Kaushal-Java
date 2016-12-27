@@ -20,7 +20,7 @@ public class MergeSortImpl {
 	}
 
 	private static void merge(int[] arr, int first, int mid, int last) {
-		int[] temp = new int[arr.length + 30];
+		int[] temp = new int[arr.length];
 		int f1 = first;
 		int fLast = mid;
 		int s1 = mid + 1;

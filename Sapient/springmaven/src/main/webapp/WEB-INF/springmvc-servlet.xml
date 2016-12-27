@@ -64,7 +64,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="studentService" class="org.kaushal.school.service.StudentService">
-		<property name="studentDao" ref="studentDao" />
+		<property name="studentDao" ref="studentDao"  />
 		<property name="modelMapper" ref="modelMapper" />
 	</bean>
 	<bean id="auditDao" class="org.kaushal.school.dao.impl.AuditDaoImpl">
